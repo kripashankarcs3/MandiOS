@@ -136,7 +136,7 @@ export function createApp() {
     if (!deal) return res.status(400).json({ error: "That buyer has no deal in this negotiation." });
 
     const receipt = {
-      id: `MS-${crypto.randomBytes(3).toString("hex").toUpperCase()}`,
+      id: `MO-${crypto.randomBytes(3).toString("hex").toUpperCase()}`,
       approvedAt: new Date().toISOString(),
       crop: s.ctx.crop,
       cropHi: CROPS[s.ctx.crop].hi,

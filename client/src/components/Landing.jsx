@@ -2,18 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import "../landing.css";
 import { BUYER_IMG, FALLBACK_BUYERS, FALLBACK_CROPS, inr, paymentText } from "../lib/format.js";
 import Logo from "./Logo.jsx";
+import SiteHeader, { NAV as LINKS } from "./SiteHeader.jsx";
 import Icon from "./Icon.jsx";
 import CropIcon from "./CropIcon.jsx";
 import InputPanel from "./InputPanel.jsx";
-
-const LINKS = [
-  ["home", "Home"],
-  ["how", "How it works"],
-  ["features", "Features"],
-  ["crops", "Crops"],
-  ["buyers", "For Buyers"],
-  ["about", "About"],
-];
 
 // Page sections in order, with the nav link each one belongs to.
 const SPY = [["home", "home"], ["features", "features"], ["start", "home"], ["how", "how"], ["trust", "features"], ["crops", "crops"], ["buyers", "buyers"], ["about", "about"]];
@@ -105,24 +97,13 @@ export default function Landing({ crops, buyers, location, live, onStart }) {
 
   return (
     <div className="landing lp">
-      <nav className={`lp-nav ${scrolled ? "scrolled" : ""}`} aria-label="Main">
-        <div className="lp-nav-in">
-          <Logo onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} />
-          <div className="lp-links">
-            {LINKS.map(([id, label]) => (
-              <a key={id} href={`#${id}`} className={active === id ? "on" : ""} onClick={link(id)}>{label}</a>
-            ))}
-          </div>
-          <div className="lp-nav-end">
-            {live != null && (
-              <span className={`pill ${live ? "pill-live" : "pill-off"}`} title={live ? "Agents are powered by an LLM" : "Rule-based agents, no API key set"}>
-                <i /> {live ? "Live AI" : "Offline demo"}
-              </span>
-            )}
-            <button type="button" className="btn btn-dark" onClick={getStarted}>Get Started <Icon name="arrow" size={18} /></button>
-          </div>
-        </div>
-      </nav>
+      <SiteHeader
+        live={live}
+        active={active}
+        onBrand={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        onLink={go}
+        action={{ label: "Get Started", icon: "arrow", onClick: getStarted }}
+      />
 
       <header className="lp-hero" id="home">
         <div className="lp-hero-photo" role="img" aria-label="A smiling farmer talking on his phone" />

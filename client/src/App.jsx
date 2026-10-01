@@ -28,6 +28,16 @@ export default function App() {
     window.scrollTo({ top: 0 });
   };
 
+  // From any screen, jump back to a section of the landing page.
+  const onNavigate = (id) => {
+    reset();
+    setReceipt(null);
+    setTimeout(() => {
+      if (id === "home") window.scrollTo({ top: 0 });
+      else document.getElementById(id)?.scrollIntoView({ block: "start" });
+    }, 60);
+  };
+
   if (state.status === "idle") {
     return (
       <Landing
@@ -40,5 +50,5 @@ export default function App() {
     );
   }
 
-  return <Workspace state={state} meta={meta} receipt={receipt} onApproved={setReceipt} onReset={onReset} />;
+  return <Workspace state={state} meta={meta} receipt={receipt} onApproved={setReceipt} onReset={onReset} onNavigate={onNavigate} />;
 }

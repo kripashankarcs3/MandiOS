@@ -1,5 +1,6 @@
+import "../workspace.css";
 import { STEPS, inr } from "../lib/format.js";
-import Logo from "./Logo.jsx";
+import SiteHeader from "./SiteHeader.jsx";
 import Icon from "./Icon.jsx";
 import CropIcon from "./CropIcon.jsx";
 import AgentMind from "./AgentMind.jsx";
@@ -36,88 +37,99 @@ function Stepper({ current, failed }) {
   );
 }
 
-export default function Workspace({ state, meta, receipt, onApproved, onReset }) {
+function StatusBadge({ state, receipt }) {
+  if (state.status === "error") return <span className="ws-status ws-status-error"><Icon name="alert" size={15} /> Stopped</span>;
+  if (receipt) return <span className="ws-status ws-status-done"><Icon name="check" size={15} /> Deal approved</span>;
+  if (state.decision) return <span className="ws-status ws-status-ready"><Icon name="tap" size={15} /> Ready for approval</span>;
+  return <span className="ws-status ws-status-run"><i /> Agents working</span>;
+}
+
+export default function Workspace({ state, meta, receipt, onApproved, onReset, onNavigate }) {
   const running = state.status === "running";
   const ctx = state.ctx;
   const crop = meta?.crops?.find((c) => c.id === ctx?.crop);
   const step = currentStep(state, receipt);
+  const live = state.live ?? meta?.live;
 
   return (
-    <div className="work">
-      <header className="work-top">
-        <Logo light />
-        <div className="work-top-end">
-          {(state.live ?? meta?.live) != null && (
-            <span className={`pill ${(state.live ?? meta?.live) ? "pill-live" : "pill-off"}`}
-              title={(state.live ?? meta?.live) ? "Agents are powered by an LLM" : "Rule-based agents, no API key set"}>
-              <i /> {(state.live ?? meta?.live) ? "Live AI" : "Offline demo"}
-            </span>
-          )}
-          <button type="button" className="btn btn-ghost-light btn-sm" onClick={onReset}>
-            <Icon name="back" size={16} /> New sale
-          </button>
-        </div>
-      </header>
+    <div className="lp ws">
+      <SiteHeader
+        live={live}
+        active={null}
+        onBrand={() => onNavigate("home")}
+        onLink={onNavigate}
+        action={{ label: "New sale", icon: "plus", onClick: onReset }}
+      />
 
-      <section className="work-banner">
-        <div className="work-banner-bg" aria-hidden="true" />
-        <div className="work-banner-inner">
+      <section className="ws-head">
+        <div className="ws-wrap">
+          <p className="ws-crumbs">
+            <a href="#home" onClick={(e) => { e.preventDefault(); onNavigate("home"); }}>Home</a>
+            <Icon name="chevron" size={14} />
+            <span>Negotiation</span>
+          </p>
           {ctx && (
-            <div className="req">
-              <span className="req-icon"><CropIcon crop={ctx.crop} size={44} /></span>
-              <div>
-                <p className="req-kicker">Selling</p>
-                <h1>
-                  {ctx.quantity} quintal {crop?.label || ctx.crop}
-                  {crop?.hi && <span lang="hi"> · {crop.hi}</span>}
-                </h1>
-                <p className="req-meta">
-                  Minimum {inr(ctx.floor)} per quintal
-                  {meta?.location && <> · <Icon name="pin" size={14} /> {meta.location}</>}
-                </p>
+            <div className="ws-title-row">
+              <div className="ws-title">
+                <span className="ws-crop"><CropIcon crop={ctx.crop} size={38} /></span>
+                <div>
+                  <h1>
+                    {ctx.quantity} quintal {crop?.label || ctx.crop}
+                    {crop?.hi && <span lang="hi"> · {crop.hi}</span>}
+                  </h1>
+                  <p className="ws-meta">
+                    <span><Icon name="shield" size={15} /> Minimum {inr(ctx.floor)} per quintal, protected</span>
+                    {meta?.location && <span><Icon name="pin" size={15} /> {meta.location}</span>}
+                  </p>
+                </div>
               </div>
+              <StatusBadge state={state} receipt={receipt} />
             </div>
           )}
           <Stepper current={step} failed={state.status === "error"} />
         </div>
       </section>
 
-      <div className="work-grid">
-        <aside className="work-side">
-          <AgentMind trace={state.trace} running={running} />
-        </aside>
+      <div className="ws-wrap ws-body">
+        {state.error && <div className="alert" role="alert"><Icon name="alert" size={20} /> {state.error}</div>}
 
-        <main className="work-main" aria-live="polite">
-          {state.error && <div className="alert" role="alert"><Icon name="alert" size={20} /> {state.error}</div>}
-          <PlanStrip plan={state.plan} phase={state.phase} running={running} />
-          <section className="buyers" aria-label="Negotiations">
-            {state.buyers.map((b) => (
-              <BuyerColumn
-                key={b.id}
-                buyer={b}
-                plan={state.plan}
-                ctx={ctx}
-                chat={state.chats[b.id] || []}
-                result={state.results[b.id]}
-                isBest={state.decision?.bestBuyerId === b.id}
-              />
-            ))}
-          </section>
-          {state.decision && (
-            <DealPanel
-              decision={state.decision}
-              results={state.results}
-              buyers={state.buyers}
-              sessionId={state.sessionId}
-              receipt={receipt}
-              onApproved={onApproved}
-            />
-          )}
-        </main>
+        <div className="ws-grid">
+          <aside className="ws-left">
+            <PlanStrip plan={state.plan} phase={state.phase} running={running} />
+            <AgentMind trace={state.trace} running={running} />
+          </aside>
+
+          <main className="ws-center" aria-live="polite">
+            <section className="buyers" aria-label="Negotiations">
+              {state.buyers.map((b) => (
+                <BuyerColumn
+                  key={b.id}
+                  buyer={b}
+                  plan={state.plan}
+                  ctx={ctx}
+                  chat={state.chats[b.id] || []}
+                  result={state.results[b.id]}
+                  isBest={state.decision?.bestBuyerId === b.id}
+                />
+              ))}
+            </section>
+          </main>
+        </div>
+
+        {state.decision && (
+          <DealPanel
+            decision={state.decision}
+            results={state.results}
+            buyers={state.buyers}
+            sessionId={state.sessionId}
+            receipt={receipt}
+            onApproved={onApproved}
+          />
+        )}
       </div>
 
-      <footer className="site-foot site-foot-light">
-        <p>Market prices, buyers and distances are sample data for this demo. Built during Bharat Agentic 2026.</p>
+      <footer className="ws-foot">
+        <div className="ws-wrap">Market prices, buyers and distances are sample data for this demo. Built during Bharat Agentic 2026.</div>
       </footer>
     </div>
   );
