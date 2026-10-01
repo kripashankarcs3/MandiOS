@@ -1,4 +1,4 @@
-# Mandi Saathi (मंडी साथी)
+# Mandi Saathi
 
 **An AI agent that researches, negotiates and closes crop deals for Indian farmers.**
 
@@ -147,4 +147,3 @@ Mandi prices, price trends, buyers and distances are **sample data** for the dem
 ## Originality
 
 All application code was written during the hackathon on 1 October 2026. Third-party software: React, Vite, Express, Helmet, express-rate-limit, cors, dotenv, and the Groq API.
-# mandi-saathi
