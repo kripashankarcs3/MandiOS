@@ -1,6 +1,8 @@
-# Mandi Saathi
+# MandiOS
 
-**An AI agent that researches, negotiates and closes crop deals for Indian farmers.**
+**The AI agent layer for India's mandis.**
+
+First agent: the Bargaining Agent. It researches, negotiates with buyers, and closes the best deal for the farmer.
 
 Built for **Bharat Agentic 2026** (AgriTech + Bharat Languages).
 
@@ -12,7 +14,7 @@ Small farmers usually sell to the first local trader who makes an offer. They ra
 
 ## The solution
 
-The farmer enters three things: **crop, quantity, and the lowest price they will accept**. Mandi Saathi does the rest:
+The farmer enters three things: **crop, quantity, and the lowest price they will accept**. MandiOS does the rest:
 
 1. **Researches** with tools: mandi prices, 7-day trend, every buyer's rating and payment terms, transport cost.
 2. **Plans**: a target price, an opening ask, and whether to sell now or wait.
@@ -97,8 +99,8 @@ Free Render instances sleep when idle; the first request can take about 30 secon
 Or with Docker:
 
 ```bash
-docker build -t mandi-saathi .
-docker run -p 3001:3001 -e GROQ_API_KEY=your_key mandi-saathi
+docker build -t mandios .
+docker run -p 3001:3001 -e GROQ_API_KEY=your_key mandios
 ```
 
 ## API

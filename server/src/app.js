@@ -26,7 +26,7 @@ function buyersForClient() {
 
 function hindiReceipt(r) {
   return [
-    "Mandi Saathi: सौदा पक्का ✅",
+    "MandiOS: सौदा पक्का ✅",
     `रसीद: ${r.id}`,
     `फसल: ${r.quantity} क्विंटल ${r.cropHi}`,
     `खरीदार: ${r.buyerName} (${r.mandi})`,

@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: mandi-saathi
+    name: mandios
     runtime: node
     plan: free
     buildCommand: npm run build

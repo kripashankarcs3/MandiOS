@@ -18,6 +18,14 @@ const RULES = [
   { icon: "tap", title: "You press the button", text: "The agent recommends. You approve. Only then do you get a receipt and a WhatsApp message to send." },
 ];
 
+const FAQ = [
+  { q: "Is this a real marketplace?", a: "Not yet. Prices, buyers and distances are sample data for this demo. The agents, the negotiation and the safety rules are real and run live." },
+  { q: "Can the agent sell below my minimum price?", a: "No. Every move is checked in code before it is sent. The agent cannot offer or accept anything below the minimum you set." },
+  { q: "Does it sell my crop without asking me?", a: "Never. The agent recommends the best deal and you approve it with one tap. Only then do you get a receipt and a WhatsApp message to send." },
+  { q: "Which language does it bargain in?", a: "The farmer's agent speaks Hindi. The buyer agents answer in English, so you can follow the whole conversation." },
+  { q: "What happens if the AI model fails?", a: "Rule-based backup agents take over that step, so a negotiation never stops half way. You will see a notice when this happens." },
+];
+
 function Reveal({ as: Tag = "div", className = "", children, ...rest }) {
   const ref = useRef(null);
   useEffect(() => {
@@ -32,6 +40,7 @@ function Reveal({ as: Tag = "div", className = "", children, ...rest }) {
   }, []);
   return <Tag ref={ref} className={`reveal ${className}`} {...rest}>{children}</Tag>;
 }
+
 
 const go = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 
@@ -54,11 +63,12 @@ export default function Landing({ crops, buyers, location, live, onStart }) {
   return (
     <div className="landing">
       <nav className={`nav ${scrolled ? "nav-solid" : ""}`} aria-label="Main">
-        <Logo light={!scrolled} onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} />
+        <Logo onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} />
         <div className="nav-links">
           <a href="#how" onClick={link("how")}>How it works</a>
           <a href="#buyers" onClick={link("buyers")}>Buyers</a>
           <a href="#trust" onClick={link("trust")}>Safety</a>
+          <a href="#faq" onClick={link("faq")}>FAQ</a>
         </div>
         <div className="nav-end">
           {live != null && (
@@ -74,14 +84,14 @@ export default function Landing({ crops, buyers, location, live, onStart }) {
         <div className="hero-bg" aria-hidden="true" />
         <div className="hero-inner">
           <div className="hero-copy">
-            <p className="eyebrow"><span /> An AI bargaining agent for Indian farmers</p>
+            <p className="eyebrow"><span /> First agent: the Bargaining Agent</p>
             <h1>
               <span className="hi" lang="hi">फसल आपकी,<br />दाम भी आपका।</span>
               <span className="en">Your crop. Your price.</span>
             </h1>
             <p className="lead">
-              Tell Mandi Saathi what you grow and the lowest price you will take. It reads the market, bargains with
-              three buyers at once, and brings you one deal to approve. No phone calls. No middleman pressure.
+              MandiOS is the AI agent layer for India's mandis. The Bargaining Agent researches, negotiates with
+              buyers, and closes the best deal for the farmer.
             </p>
             <ul className="proof">
               <li><strong>3</strong><span>buyers bargained<br />at the same time</span></li>
@@ -91,10 +101,8 @@ export default function Landing({ crops, buyers, location, live, onStart }) {
           </div>
           <InputPanel crops={crops?.length ? crops : FALLBACK_CROPS} location={location} running={false} onStart={onStart} />
         </div>
-        <button type="button" className="scroll-cue" onClick={() => go("how")} aria-label="See how it works">
-          <Icon name="down" size={18} />
-        </button>
       </header>
+
 
       <section className="sec how" id="how">
         <Reveal className="how-photo">
@@ -150,7 +158,7 @@ export default function Landing({ crops, buyers, location, live, onStart }) {
             <p className="kicker kicker-light">The twist</p>
             <h2>The highest offer is not always the best deal.</h2>
             <p>
-              Far-away buyers pay more per quintal, but transport and slow payment eat the difference. Mandi Saathi ranks
+              Far-away buyers pay more per quintal, but transport and slow payment eat the difference. MandiOS ranks
               deals by the money that actually reaches your hand.
             </p>
             <button type="button" className="btn btn-gold" onClick={focusForm}>Try it with your crop <Icon name="arrow" size={18} /></button>
@@ -192,6 +200,21 @@ export default function Landing({ crops, buyers, location, live, onStart }) {
         </div>
       </section>
 
+      <section className="sec faq" id="faq">
+        <Reveal className="sec-head center">
+          <p className="kicker">Questions</p>
+          <h2>What farmers and judges ask first.</h2>
+        </Reveal>
+        <div className="faq-list">
+          {FAQ.map((f) => (
+            <details key={f.q} className="faq-item">
+              <summary>{f.q}<Icon name="plus" size={18} /></summary>
+              <p>{f.a}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
       <section className="cta">
         <div className="cta-bg" aria-hidden="true" />
         <Reveal className="cta-inner">
@@ -202,10 +225,32 @@ export default function Landing({ crops, buyers, location, live, onStart }) {
       </section>
 
       <footer className="site-foot">
-        <Logo light />
-        <p>
-          Market prices, buyers and distances are sample data for this demo. Built during Bharat Agentic 2026.
-          Photos from <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer">Unsplash</a>.
+        <div className="foot-grid">
+          <div className="foot-brand">
+            <Logo light />
+            <p>The AI agent layer for India's mandis. The Bargaining Agent researches, negotiates with buyers and closes the best deal for the farmer.</p>
+          </div>
+          <nav aria-label="Product">
+            <h3>Product</h3>
+            <a href="#how" onClick={link("how")}>How it works</a>
+            <a href="#buyers" onClick={link("buyers")}>Buyers</a>
+            <a href="#trust" onClick={link("trust")}>Safety</a>
+            <a href="#faq" onClick={link("faq")}>FAQ</a>
+          </nav>
+          <div>
+            <h3>Crops</h3>
+            <span>Onion</span><span>Tomato</span><span>Soybean</span><span>Wheat</span><span>Cotton</span>
+          </div>
+          <div>
+            <h3>Project</h3>
+            <span>Built for Bharat Agentic 2026</span>
+            <span>Farmer agent speaks Hindi</span>
+            <span>Guardrails enforced in code</span>
+          </div>
+        </div>
+        <p className="foot-note">
+          Market prices, buyers and distances are sample data for this demo. Photos from{" "}
+          <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer">Unsplash</a>.
         </p>
       </footer>
     </div>

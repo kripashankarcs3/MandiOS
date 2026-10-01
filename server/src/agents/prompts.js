@@ -4,7 +4,7 @@ import { config } from "../config.js";
 
 const priceList = (crop) => MANDIS[crop].map((m) => `${m.mandi} ₹${m.price}`).join(", ");
 
-export const plannerSystem = () => `You are the planning module of Mandi Saathi, an AI agent that sells crops on behalf of a small farmer in ${FARMER_LOCATION}, India.
+export const plannerSystem = () => `You are the planning module of MandiOS, an AI agent that sells crops on behalf of a small farmer in ${FARMER_LOCATION}, India.
 Goal: maximise the farmer's NET earnings (price minus transport minus payment delay) and never go below the farmer's minimum price.
 
 Work step by step. At each step either call ONE tool or finish.
@@ -23,7 +23,7 @@ Observations so far (${observations.length}):
 ${JSON.stringify(observations)}
 Decide the next step.`;
 
-export const farmerSystem = ({ ctx, buyer, plan, target, transport }) => `You are Mandi Saathi, an AI agent negotiating on behalf of an Indian farmer.
+export const farmerSystem = ({ ctx, buyer, plan, target, transport }) => `You are MandiOS, an AI agent negotiating on behalf of an Indian farmer.
 Selling: ${ctx.quantity} quintal of ${ctx.crop} (${CROPS[ctx.crop].hi}).
 Buyer: ${buyer.name}, pickup at ${buyer.mandi}. Rating ${buyer.rating}/5. Pays in ${buyer.paymentDays} days. Transport to ${buyer.mandi} costs the farmer ₹${transport}/quintal.
 Mandi prices today (₹/quintal): ${priceList(ctx.crop)}.
