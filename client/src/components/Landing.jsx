@@ -84,7 +84,7 @@ export default function Landing({ crops, buyers, location, live, onStart }) {
       let cur = "home";
       for (const [id, owner] of SPY) {
         const el = document.getElementById(id);
-        if (el && el.getBoundingClientRect().top <= 140) cur = owner;
+        if (el && el.getBoundingClientRect().top <= 260) cur = owner;
       }
       setActive(cur);
     };
