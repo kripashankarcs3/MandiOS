@@ -97,6 +97,8 @@ a { color: inherit; }
 .logo-light { color: #fff; }
 .logo-text { display: flex; flex-direction: column; line-height: 1.05; }
 .logo-text strong { font-family: var(--display); font-size: 1.3rem; font-weight: 700; letter-spacing: -0.02em; }
+.logo-text strong em { font-style: normal; color: var(--gold-deep); }
+.logo-light .logo-text strong em { color: var(--gold-hi); }
 .logo-text span { font-family: var(--body); font-size: 0.78rem; opacity: 0.72; margin-top: 2px; }
 
 /* ---------- Landing: nav ---------- */

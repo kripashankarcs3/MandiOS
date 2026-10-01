@@ -1,13 +1,14 @@
-/** MandiOS mark: a coin with a sprout growing out of it (crop → money). */
+/**
+ * MandiOS mark: a bold "M" whose two peaks read as market awnings, with a gold coin dropping into the
+ * valley between them (the price). Solid shapes on a 64px grid, so it stays legible down to favicon size.
+ */
 export function LogoMark({ size = 40 }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 48 48" aria-hidden="true" focusable="false">
-      <rect width="48" height="48" rx="13" fill="#183d2b" />
-      <circle cx="24" cy="30" r="10" fill="#e3a21a" />
-      <circle cx="24" cy="30" r="6.4" fill="none" stroke="#b9780a" strokeWidth="1.6" />
-      <path d="M24 21V12" stroke="#f7f1e5" strokeWidth="2.4" strokeLinecap="round" />
-      <path d="M24 17c-5 0-8-3-8-8 5 0 8 3 8 8z" fill="#8fd19e" />
-      <path d="M24 14c0-5 3-8 8-8 0 5-3 8-8 8z" fill="#cdefd0" />
+    <svg width={size} height={size} viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+      <rect width="64" height="64" rx="17" fill="#173b29" />
+      <path d="M14 48V15L23 15L32 29L41 15L50 15V48H42V28L32 41L22 28V48Z" fill="#f7f1e5" stroke="#f7f1e5" strokeWidth="2" strokeLinejoin="round" />
+      <circle cx="32" cy="16.5" r="5.4" fill="#f0b537" />
+      <circle cx="32" cy="16.5" r="2.3" fill="#c98a0f" />
     </svg>
   );
 }
@@ -19,7 +20,7 @@ export default function Logo({ light = false, onClick }) {
       aria-label={onClick ? "MandiOS, go to home" : undefined}>
       <LogoMark />
       <span className="logo-text">
-        <strong>MandiOS</strong>
+        <strong>Mandi<em>OS</em></strong>
         <span>AI agents for India's mandis</span>
       </span>
     </Tag>
