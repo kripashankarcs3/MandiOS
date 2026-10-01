@@ -1,4 +1,4 @@
-/* Mandi Saathi
+/* MandiOS
    Warm, grounded and editorial: cream paper, deep field green, turmeric gold for money,
    chili red for danger, onion rose for buyers. Real photography, not gradients. */
 :root {
@@ -97,7 +97,7 @@ a { color: inherit; }
 .logo-light { color: #fff; }
 .logo-text { display: flex; flex-direction: column; line-height: 1.05; }
 .logo-text strong { font-family: var(--display); font-size: 1.3rem; font-weight: 700; letter-spacing: -0.02em; }
-.logo-text span { font-family: var(--hindi); font-size: 0.82rem; opacity: 0.72; margin-top: 2px; }
+.logo-text span { font-family: var(--body); font-size: 0.78rem; opacity: 0.72; margin-top: 2px; }
 
 /* ---------- Landing: nav ---------- */
 .nav {

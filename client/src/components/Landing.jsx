@@ -33,6 +33,7 @@ function Reveal({ as: Tag = "div", className = "", children, ...rest }) {
   return <Tag ref={ref} className={`reveal ${className}`} {...rest}>{children}</Tag>;
 }
 
+
 const go = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 
 export default function Landing({ crops, buyers, location, live, onStart }) {
@@ -74,14 +75,14 @@ export default function Landing({ crops, buyers, location, live, onStart }) {
         <div className="hero-bg" aria-hidden="true" />
         <div className="hero-inner">
           <div className="hero-copy">
-            <p className="eyebrow"><span /> An AI bargaining agent for Indian farmers</p>
+            <p className="eyebrow"><span /> First agent: the Bargaining Agent</p>
             <h1>
               <span className="hi" lang="hi">फसल आपकी,<br />दाम भी आपका।</span>
               <span className="en">Your crop. Your price.</span>
             </h1>
             <p className="lead">
-              Tell Mandi Saathi what you grow and the lowest price you will take. It reads the market, bargains with
-              three buyers at once, and brings you one deal to approve. No phone calls. No middleman pressure.
+              MandiOS is the AI agent layer for India's mandis. The Bargaining Agent researches, negotiates with
+              buyers, and closes the best deal for the farmer.
             </p>
             <ul className="proof">
               <li><strong>3</strong><span>buyers bargained<br />at the same time</span></li>
@@ -95,6 +96,7 @@ export default function Landing({ crops, buyers, location, live, onStart }) {
           <Icon name="down" size={18} />
         </button>
       </header>
+
 
       <section className="sec how" id="how">
         <Reveal className="how-photo">
@@ -150,7 +152,7 @@ export default function Landing({ crops, buyers, location, live, onStart }) {
             <p className="kicker kicker-light">The twist</p>
             <h2>The highest offer is not always the best deal.</h2>
             <p>
-              Far-away buyers pay more per quintal, but transport and slow payment eat the difference. Mandi Saathi ranks
+              Far-away buyers pay more per quintal, but transport and slow payment eat the difference. MandiOS ranks
               deals by the money that actually reaches your hand.
             </p>
             <button type="button" className="btn btn-gold" onClick={focusForm}>Try it with your crop <Icon name="arrow" size={18} /></button>

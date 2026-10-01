@@ -1,4 +1,4 @@
-/** Mandi Saathi mark: a coin with a sprout growing out of it (crop → money). */
+/** MandiOS mark: a coin with a sprout growing out of it (crop → money). */
 export function LogoMark({ size = 40 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 48 48" aria-hidden="true" focusable="false">
@@ -16,11 +16,11 @@ export default function Logo({ light = false, onClick }) {
   const Tag = onClick ? "button" : "div";
   return (
     <Tag className={`logo ${light ? "logo-light" : ""}`} onClick={onClick} type={onClick ? "button" : undefined}
-      aria-label={onClick ? "Mandi Saathi, go to home" : undefined}>
+      aria-label={onClick ? "MandiOS, go to home" : undefined}>
       <LogoMark />
       <span className="logo-text">
-        <strong>Mandi Saathi</strong>
-        <span lang="hi">मंडी साथी</span>
+        <strong>MandiOS</strong>
+        <span>AI agents for India's mandis</span>
       </span>
     </Tag>
   );
