@@ -1,4 +1,12 @@
 const PATHS = {
+  chart: <path d="M5 20v-6M12 20V7M19 20V3M3 20h18" strokeWidth="2.4" />,
+  doc: <><path d="M7 3h7l5 5v13H7z" /><path d="M14 3v5h5M10 13h6M10 17h6" /></>,
+  play: <><circle cx="12" cy="12" r="9" /><path d="M10 8.500l6 3.500-6 3.500z" fill="currentColor" stroke="none" /></>,
+  store: <><path d="M4 9l1.500-5h13L20 9" /><path d="M4 9a2.700 2.700 0 0 0 5.300 0 2.700 2.700 0 0 0 5.400 0A2.700 2.700 0 0 0 20 9" /><path d="M5.500 12.500V20h13v-7.500M10 20v-4.500h4V20" /></>,
+  building: <path d="M5 21V4.500L14 3v18M14 8h5v13M8 8h3M8 12h3M8 16h3M3 21h18" />,
+  chevron: <path d="M9 6l6 6-6 6" />,
+  trend: <path d="M3 17l6-6 4 4 8-8M15 7h6v6" />,
+  globe: <><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18" /></>,
   arrow: <path d="M5 12h14M13 6l6 6-6 6" />,
   back: <path d="M19 12H5M11 6l-6 6 6 6" />,
   down: <path d="M12 5v14M6 13l6 6 6-6" />,
