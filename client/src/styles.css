@@ -468,8 +468,11 @@ tbody th { font-weight: 600; }
   .crop-hi { display: none; }
   .sell { padding: 20px; }
   .sell-fields { grid-template-columns: 1fr; }
-  .proof { gap: 18px; }
+  .proof { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .proof li { flex-direction: column; align-items: flex-start; gap: 4px; }
   .proof strong { font-size: 1.9rem; }
+  .proof span br { display: none; }
+  .proof span { font-size: 0.8rem; }
   .how-step { grid-template-columns: 44px 1fr; gap: 14px; }
   .how-num { font-size: 2.6rem; }
   .cmp-row { grid-template-columns: 1fr auto; }

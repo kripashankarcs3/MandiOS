@@ -17,7 +17,18 @@ export const config = Object.freeze({
   // Any OpenAI-compatible provider works (Groq default, OpenCode Zen, etc.).
   llmBaseUrl: process.env.LLM_BASE_URL || "https://api.groq.com/openai/v1",
   llmKey: process.env.LLM_API_KEY || process.env.GROQ_API_KEY || "",
-  llmModel: process.env.LLM_MODEL || process.env.GROQ_MODEL || "qwen/qwen3.8-27b",
+  // Extra keys (comma-separated LLM_API_KEYS / GROQ_API_KEYS) share the load; each has its own rate-limit bucket.
+  llmKeys: [...new Set([
+    process.env.LLM_API_KEY || process.env.GROQ_API_KEY || "",
+    ...(process.env.LLM_API_KEYS || process.env.GROQ_API_KEYS || "").split(","),
+  ].map((k) => k.trim()).filter(Boolean))],
+  // With a custom base URL (e.g. OpenCode Zen) the Groq model names don't apply; default to its free model.
+  llmModel: process.env.LLM_MODEL
+    || (process.env.LLM_BASE_URL ? "big-pickle" : process.env.GROQ_MODEL || "qwen/qwen3.8-27b"),
+  // Optional, comma-separated. Tried in order when the main model is rate-limited, times out or returns bad JSON.
+  // Off by default: on Groq's free tier the token quota is shared across models, so switching does not help.
+  llmFallbackModels: (process.env.LLM_FALLBACK_MODELS || "")
+    .split(",").map((m) => m.trim()).filter(Boolean),
   llmTimeoutMs: num(process.env.LLM_TIMEOUT_MS, 15000),
   eventDelayMs: num(process.env.EVENT_DELAY_MS, 550),
   forceOffline: process.env.FORCE_OFFLINE === "1",
