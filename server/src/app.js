@@ -11,6 +11,7 @@ import { config, isLive } from "./config.js";
 import { BUYERS, CROPS, FARMER_LOCATION, publicBuyer } from "./data.js";
 import { transportFor } from "./tools.js";
 import { runSession } from "./session.js";
+import { buildOutlook } from "./outlook.js";
 import { sessions } from "./store.js";
 import { parseApproveBody, parseNegotiateQuery } from "./validation.js";
 import { log } from "./logger.js";
@@ -64,6 +65,12 @@ export function createApp() {
   });
 
   app.get("/api/health", (_req, res) => res.json({ ok: true, live: isLive() }));
+
+  app.get("/api/outlook", (req, res) => {
+    const outlook = buildOutlook(String(req.query.crop ?? "onion").toLowerCase());
+    if (!outlook) return res.status(400).json({ error: "Unknown crop." });
+    res.json(outlook);
+  });
 
   app.get("/api/meta", (_req, res) => {
     res.json({
@@ -136,7 +143,7 @@ export function createApp() {
     if (!deal) return res.status(400).json({ error: "That buyer has no deal in this negotiation." });
 
     const receipt = {
-      id: `MS-${crypto.randomBytes(3).toString("hex").toUpperCase()}`,
+      id: `MO-${crypto.randomBytes(3).toString("hex").toUpperCase()}`,
       approvedAt: new Date().toISOString(),
       crop: s.ctx.crop,
       cropHi: CROPS[s.ctx.crop].hi,
