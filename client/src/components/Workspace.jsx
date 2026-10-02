@@ -1,6 +1,7 @@
 import "../workspace.css";
-import { STEPS, inr } from "../lib/format.js";
+import { FALLBACK_CROPS, STEPS, inr } from "../lib/format.js";
 import SiteHeader from "./SiteHeader.jsx";
+import SiteFooter from "./SiteFooter.jsx";
 import Icon from "./Icon.jsx";
 import CropIcon from "./CropIcon.jsx";
 import AgentMind from "./AgentMind.jsx";
@@ -53,13 +54,7 @@ export default function Workspace({ state, meta, receipt, onApproved, onReset, o
 
   return (
     <div className="lp ws">
-      <SiteHeader
-        live={live}
-        active={null}
-        onBrand={() => onNavigate("home")}
-        onLink={onNavigate}
-        action={{ label: "New sale", icon: "plus", onClick: onReset }}
-      />
+      <SiteHeader live={live} active="sell" onNavigate={onNavigate} />
 
       <section className="ws-head">
         <div className="ws-wrap">
@@ -128,9 +123,7 @@ export default function Workspace({ state, meta, receipt, onApproved, onReset, o
         )}
       </div>
 
-      <footer className="ws-foot">
-        <div className="ws-wrap">Market prices, buyers and distances are sample data for this demo. Built during Bharat Agentic 2026.</div>
-      </footer>
+      <SiteFooter crops={meta?.crops || FALLBACK_CROPS} onNavigate={onNavigate} />
     </div>
   );
 }

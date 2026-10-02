@@ -1,20 +1,19 @@
 import { useEffect, useRef, useState } from "react";
 import "../landing.css";
-import { BUYER_IMG, FALLBACK_BUYERS, FALLBACK_CROPS, inr, paymentText } from "../lib/format.js";
-import Logo from "./Logo.jsx";
-import SiteHeader, { NAV as LINKS } from "./SiteHeader.jsx";
+import { BUYER_IMG, DEFAULT_FLOOR, FALLBACK_BUYERS, FALLBACK_CROPS, inr, paymentText } from "../lib/format.js";
+import SiteHeader from "./SiteHeader.jsx";
+import SiteFooter from "./SiteFooter.jsx";
 import Icon from "./Icon.jsx";
 import CropIcon from "./CropIcon.jsx";
-import InputPanel from "./InputPanel.jsx";
 
 // Page sections in order, with the nav link each one belongs to.
 const SPY = [["home", "home"], ["features", "features"], ["start", "home"], ["how", "how"], ["trust", "features"], ["crops", "crops"], ["buyers", "buyers"], ["about", "about"]];
 
 const STRIP = [
-  { icon: "chart", tone: "g", title: "Live Mandi Prices", text: "Across nearby mandis" },
-  { icon: "chat", tone: "y", title: "AI Negotiates for You", text: "With multiple buyers" },
-  { icon: "shield", tone: "r", title: "Your Minimum Price", text: "Always protected" },
-  { icon: "doc", tone: "b", title: "One-Tap Approval", text: "Get receipt & WhatsApp confirmation" },
+  { icon: "chart", tone: "g", title: "मंडी के ताज़ा भाव", text: "आसपास की मंडियों के दाम" },
+  { icon: "chat", tone: "y", title: "AI करे मोलभाव", text: "कई खरीदारों से एक साथ" },
+  { icon: "shield", tone: "r", title: "आपका न्यूनतम भाव", text: "हमेशा सुरक्षित" },
+  { icon: "doc", tone: "b", title: "एक टैप में मंज़ूरी", text: "रसीद और WhatsApp संदेश" },
 ];
 
 const HOW = [
@@ -66,7 +65,7 @@ function IndiaMap() {
 
 const go = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 
-export default function Landing({ crops, buyers, location, live, onStart }) {
+export default function Landing({ crops, buyers, live, onStart, onOpenSell, onOpenMarket }) {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("home");
 
@@ -87,30 +86,29 @@ export default function Landing({ crops, buyers, location, live, onStart }) {
 
   const list = buyers?.length ? buyers : FALLBACK_BUYERS;
   const cropList = crops?.length ? crops : FALLBACK_CROPS;
-  const link = (id) => (e) => { e.preventDefault(); go(id); };
-  const getStarted = () => {
-    go("start");
-    setTimeout(() => document.getElementById("qty")?.focus({ preventScroll: true }), 500);
+  const getStarted = () => onOpenSell();
+  const onNavigate = (id) => {
+    if (id === "sell") onOpenSell();
+    else if (id === "market") onOpenMarket();
+    else if (id === "home") window.scrollTo({ top: 0, behavior: "smooth" });
+    else go(id);
   };
   const watchDemo = () => onStart({ crop: "onion", quantity: 40, floor: 1700 });
   const short = (n) => n.split(" ").slice(0, 2).join(" ");
 
   return (
     <div className="landing lp">
-      <SiteHeader
-        live={live}
-        active={active}
-        onBrand={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        onLink={go}
-        action={{ label: "Get Started", icon: "arrow", onClick: getStarted }}
-      />
+      <SiteHeader live={live} active={active} onNavigate={onNavigate} />
 
       <header className="lp-hero" id="home">
-        <div className="lp-hero-photo" role="img" aria-label="A smiling farmer talking on his phone" />
+        <div className="lp-hero-photo" role="img" aria-label="Rows of green crops in the evening sun" />
         <div className="lp-wrap lp-hero-grid">
           <div className="lp-hero-copy">
             <p className="lp-badge"><Icon name="tap" size={18} /> Bharat Agentic 2026 <span aria-hidden="true">·</span> AgriTech + Bharat Languages</p>
-            <h1>A smarter deal<br /> for every kisaan</h1>
+            <h1>
+              <span className="lp-hi" lang="hi">फसल आपकी,<br />दाम भी आपका।</span>
+              <span className="lp-en">Your crop. Your price.</span>
+            </h1>
             <p className="lp-lead">
               MandiOS is the AI agent layer for India's mandis. The Bargaining Agent researches mandi prices,
               negotiates with multiple buyers, and brings you the best deal for one-tap approval.
@@ -172,18 +170,15 @@ export default function Landing({ crops, buyers, location, live, onStart }) {
       </section>
 
       <section className="lp-sec" id="start">
-        <div className="lp-wrap lp-start">
-          <Reveal className="lp-start-copy">
-            <p className="lp-eyebrow">Start selling</p>
-            <h2>Tell MandiOS what you grow.</h2>
-            <p>Enter your crop, how much you have and the lowest price you will take. The agent does the rest.</p>
-            <ul className="lp-points">
-              <li><span className="lp-ic g"><Icon name="lock" size={20} /></span><div><b>Your minimum is protected</b><span>The agent never offers or accepts less.</span></div></li>
-              <li><span className="lp-ic y"><Icon name="chat" size={20} /></span><div><b>Three buyers at once</b><span>A trader, a farmer collective and an exporter.</span></div></li>
-              <li><span className="lp-ic b"><Icon name="doc" size={20} /></span><div><b>One deal to approve</b><span>You get a receipt and a Hindi WhatsApp message.</span></div></li>
-            </ul>
+        <div className="lp-wrap">
+          <Reveal className="lp-cta-band">
+            <div>
+              <p className="lp-eyebrow" style={{ color: "#9fe0bd" }}>Start selling</p>
+              <h2>Tell MandiOS what you grow.</h2>
+              <p>Enter your crop, how much you have and the lowest price you will take. The agent finds the best buyer and you approve one deal.</p>
+            </div>
+            <button type="button" className="btn btn-dark btn-xl" onClick={() => onOpenSell()}>Find me the best buyer <Icon name="arrow" size={20} /></button>
           </Reveal>
-          <Reveal><InputPanel crops={cropList} location={location} running={false} onStart={onStart} /></Reveal>
         </div>
       </section>
 
@@ -226,17 +221,20 @@ export default function Landing({ crops, buyers, location, live, onStart }) {
       </section>
 
       <section className="lp-sec soft" id="crops">
-        <div className="lp-wrap">
-          <Reveal className="lp-head center">
+        <div className="lp-wrap lp-crops-wrap">
+          <Reveal className="lp-head lp-crops-head">
             <p className="lp-eyebrow">Crops</p>
             <h2>Five crops, ready to sell.</h2>
             <p>Pick one and the agent starts with sensible defaults for price and quantity.</p>
+            <button type="button" className="btn btn-dark" onClick={() => onOpenSell()}>Sell a crop <Icon name="arrow" size={18} /></button>
           </Reveal>
           <div className="lp-crops">
             {cropList.map((c) => (
-              <Reveal as="a" key={c.id} className="lp-crop" href="#start" onClick={link("start")}>
-                <CropIcon crop={c.id} size={64} />
-                <div><b>{c.label}</b><span lang="hi">{c.hi}</span></div>
+              <Reveal as="a" key={c.id} className="lp-crop" href="#sell" onClick={(e) => { e.preventDefault(); onOpenSell(c.id); }}>
+                <CropIcon crop={c.id} size={48} />
+                <div className="lp-crop-name"><b>{c.label}</b><span lang="hi">{c.hi}</span></div>
+                {DEFAULT_FLOOR[c.id] && <div className="lp-crop-price"><small>Suggested minimum</small><b>{inr(DEFAULT_FLOOR[c.id])}<span> / quintal</span></b></div>}
+                <Icon name="arrow" size={18} />
               </Reveal>
             ))}
           </div>
@@ -313,37 +311,7 @@ export default function Landing({ crops, buyers, location, live, onStart }) {
         </div>
       </section>
 
-      <footer className="lp-foot">
-        <div className="lp-wrap">
-          <div className="lp-foot-grid">
-            <div className="lp-foot-brand">
-              <Logo light />
-              <p>The AI agent layer for India's mandis. The Bargaining Agent researches, negotiates with buyers and closes the best deal for the farmer.</p>
-            </div>
-            <nav aria-label="Product">
-              <h3>Product</h3>
-              <a href="#how" onClick={link("how")}>How it works</a>
-              <a href="#features" onClick={link("features")}>Features</a>
-              <a href="#crops" onClick={link("crops")}>Crops</a>
-              <a href="#buyers" onClick={link("buyers")}>For Buyers</a>
-            </nav>
-            <div className="lp-foot-col">
-              <h3>Crops</h3>
-              {cropList.map((c) => <span key={c.id}>{c.label}</span>)}
-            </div>
-            <div className="lp-foot-col">
-              <h3>Project</h3>
-              <span>Built for Bharat Agentic 2026</span>
-              <span>Farmer agent speaks Hindi</span>
-              <span>Guardrails enforced in code</span>
-            </div>
-          </div>
-          <p className="lp-foot-note">
-            Market prices, buyers and distances are sample data for this demo. Photos from{" "}
-            <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer">Unsplash</a>.
-          </p>
-        </div>
-      </footer>
+      <SiteFooter crops={cropList} onNavigate={onNavigate} />
     </div>
   );
 }
